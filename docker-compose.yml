@@ -4,3 +4,5 @@
     build:
       context: .
       dockerfile: WebApp/Dockerfile
+    environment:
+      - ENV_VAR1=composevar1

@@ -3,8 +3,18 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+ENV ENV_VAR1=Dockerfileval1
+ENV ENV_VAR2=Dockerfileval2
+
+ENV LOGGING__LOGLEVEL__DEFAULT=Debug
+ENV LOGGING__LOGLEVEL__MICROSOFT__ASPNETCORE=Debug
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+
+
+
 ARG BUILD_CONFIGURATION=Release
+
 WORKDIR /src
 COPY ["WebApp/WebApp.csproj", "WebApp/"]
 RUN dotnet restore "WebApp/WebApp.csproj"
@@ -19,4 +29,6 @@ RUN dotnet publish "WebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:Us
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+
 ENTRYPOINT ["dotnet", "WebApp.dll"]
